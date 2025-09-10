@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: the css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: the JavaScript file
+    deactivate server
+
+    Note right of browser: Browser starts executing script that on load fetches <br> the notes from the server and displays them.<br>On a note submission displays it right away<br>and pushes it to backend
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{"content":"namaskaram!","date":"2025-09-10T07:36:17.065Z"}, ... ]
+    deactivate server
+   
+    browser->>server: GET https://studies.cs.helsinki.fi/favicon.ico
+    activate server
+    server-->>browser: HTTP/1.1 404 Not Found
+    deactivate server
+
