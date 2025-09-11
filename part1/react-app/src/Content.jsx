@@ -1,17 +1,12 @@
 import React from "react";
+import Part from "./Part";
 
 export default function Header({ props }) {
 	return (
 		<div>
-			<p>
-				{props.parts[0].part} {props.parts[0].exerc}
-			</p>
-			<p>
-				{props.parts[1].part} {props.parts[1].exerc}
-			</p>
-			<p>
-				{props.parts[2].part} {props.parts[2].exerc}
-			</p>
+			<Part part={props.parts[0].part} exerc={props.parts[0].exerc} />
+			<Part part={props.parts[1].part} exerc={props.parts[1].exerc} />
+			<Part part={props.parts[2].part} exerc={props.parts[2].exerc} />
 		</div>
 	);
 }
