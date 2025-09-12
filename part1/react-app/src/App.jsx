@@ -3,27 +3,29 @@ import Content from "./Content";
 import Total from "./Total";
 
 const App = () => {
-	const course = "Half Stack application development";
-	const parts = [
-		{
-			name: "Fundamentals of React",
-			exercises: 10,
-		},
-		{
-			name: "Using props to pass data",
-			exercises: 7,
-		},
-		{
-			name: "State of a component",
-			exercises: 14,
-		},
-	];
-
+	const course = {
+		name: "Half Stack application development",
+		parts: [
+			{
+				name: "Fundamentals of React",
+				exercises: 10,
+			},
+			{
+				name: "Using props to pass data",
+				exercises: 7,
+			},
+			{
+				name: "State of a component",
+				exercises: 14,
+			},
+		],
+	};
+	console.log("1.5 Course object");
 	return (
 		<div>
-			<Header props={{ course: course }} />
-			<Content props={{ parts: parts }} />
-			<Total props={{ parts: parts }} />
+			<Header props={{ course: course.name }} />
+			<Content props={{ parts: course.parts }} />
+			<Total props={{ parts: course.parts }} />
 		</div>
 	);
 };

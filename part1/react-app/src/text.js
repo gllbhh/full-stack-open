@@ -1,20 +1,11 @@
-const obj = {
-	name: "john",
+const arto = {
+	name: "Arto Hellas",
 	age: 35,
-};
-console.log(obj);
+	education: "PhD",
 
-obj.address = "Oulu";
-console.log(obj);
-
-obj["index"] = 90500;
-console.log(obj);
-
-const sum = (p1, p2) => {
-	console.log(p1);
-	console.log(p2);
-	return p1 + p2;
+	greet: function () {
+		console.log("hello, my name is " + this.name);
+	},
 };
 
-const result = sum(1, 5);
-console.log(result);
+arto.greet(); // "hello, my name is Arto Hellas" gets printed
