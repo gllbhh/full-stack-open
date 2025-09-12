@@ -1,11 +1,5 @@
-const arto = {
-	name: "Arto Hellas",
-	age: 35,
-	education: "PhD",
-
-	greet: function () {
-		console.log("hello, my name is " + this.name);
-	},
+const hello = (who) => () => {
+	console.log("hello", who);
 };
 
-arto.greet(); // "hello, my name is Arto Hellas" gets printed
+hello("hellod")();
