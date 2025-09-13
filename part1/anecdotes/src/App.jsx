@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Button from './Button'
 
 const App = () => {
   const anecdotes = [
@@ -11,21 +12,36 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
+  const [votes, setVotes] = useState(anecdotes.map(() => 0));
+  console.log("votes:",votes);
+
   const [selected, setSelected] = useState(0)
 
-  function getRandomInt(max) {
+  const getRandomInt = (max) => {
     return Math.floor(Math.random() * max);
   }
+
   const getRandomAnecdote = () =>{
     setSelected(getRandomInt(anecdotes.length));
   }
+
+  const vote = (selected) => {
+    const newVotes = [...votes];
+    newVotes[selected] += 1;
+    console.log("New Votes", newVotes);
+    setVotes(newVotes);
+  }
+  
   return (
     <div  className='d-flex flex-column justify-content-center align-items-center vh-100'>
       <div style={{maxWidth: '600px'}}>
       {anecdotes[selected]}
       </div>
-      <button type="button" className="btn btn-primary" onClick={getRandomAnecdote}>Get New Anecdote</button>
+      <div>
+
+      <Button props={{onClick: () => vote(selected), text: 'Vote +1'}}/>     
+      <Button props={{onClick: getRandomAnecdote, text: 'Get Anecdote'}}/>     
+      </div>
     </div>
   )
 }
