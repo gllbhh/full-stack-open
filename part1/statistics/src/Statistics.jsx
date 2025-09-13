@@ -1,4 +1,5 @@
 import React from "react";
+import StatisticsLine from "./StatisticsLine";
 
 const Statistics = ({ props }) => {
 	const { good, neutral, bad } = props;
@@ -11,12 +12,22 @@ const Statistics = ({ props }) => {
 	} else {
 		output = (
 			<div style={{ textAlign: "left" }}>
-				<p>Good: {good}</p>
+				{/* <p>Good: {good}</p>
 				<p>Neutral: {neutral}</p>
 				<p>Bad: {bad}</p>
 				<p>All: {all}</p>
 				<p>Average: {avg.toFixed(2)}</p>
-				<p>Positive: {pos.toFixed(2)}%</p>
+				<p>Positive: {pos.toFixed(2)}%</p> */}
+				<table className="table">
+					<tbody>
+						<StatisticsLine props={{ text: "Good: ", value: good, text1: "" }} />
+						<StatisticsLine props={{ text: "Neutral: ", value: neutral, text1: "" }} />
+						<StatisticsLine props={{ text: "Bad: ", value: bad, text1: "" }} />
+						<StatisticsLine props={{ text: "All: ", value: all, text1: "" }} />
+						<StatisticsLine props={{ text: "Average: ", value: avg.toFixed(2), text1: "" }} />
+						<StatisticsLine props={{ text: "Positive: ", value: pos.toFixed(2), text1: "%" }} />
+					</tbody>
+				</table>
 			</div>
 		);
 	}
