@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import ContactList from "./ContactList";
+import personService from "./services/persons";
 import Filter from "./Filter";
 import AddContact from "./AddContact";
 
@@ -13,10 +13,7 @@ const App = () => {
 	// fetch data from localhost server using useEffect
 	useEffect(() => {
 		console.log("effect");
-		axios.get("http://localhost:3001/persons").then((response) => {
-			console.log("promise fulfilled");
-			setPersons(response.data);
-		});
+		personService.getAll().then((persons) => setPersons(persons));
 	}, []);
 
 	// handle name input
@@ -56,31 +53,35 @@ const App = () => {
 
 			return;
 		}
-		// get max id from persons and add 1
-		const nextId = persons.reduce((max, person) => Math.max(max, person.id), 0) + 1;
-
-		// use spread operator to update persons
-		const updatedPersons = [...persons, { name: newName, number: newNumber, id: nextId }];
-
-		// sort new persons by name
-		updatedPersons.sort((a, b) => {
-			const nameA = a.name.toUpperCase();
-			const nameB = b.name.toUpperCase();
-			if (nameA < nameB) {
-				return -1;
-			}
-			if (nameA > nameB) {
-				return 1;
-			}
-			// if names are equal
-			return 0;
-		});
-		console.log(updatedPersons);
-		// sent persons
-		setPersons(updatedPersons);
-		// clear the input field
-		setNewName("");
-		setNewNumber("");
+		const newPerson = { name: newName, number: newNumber };
+		personService
+			.create(newPerson)
+			.then((returnedPerson) => {
+				//const updatedPersons = [...persons, returnedPerson];
+				const updatedPersons = persons.concat(returnedPerson);
+				// sort new persons by name
+				updatedPersons.sort((a, b) => {
+					const nameA = a.name.toUpperCase();
+					const nameB = b.name.toUpperCase();
+					if (nameA < nameB) {
+						return -1;
+					}
+					if (nameA > nameB) {
+						return 1;
+					}
+					// if names are equal
+					return 0;
+				});
+				console.log(updatedPersons);
+				// sent persons
+				setPersons(updatedPersons);
+				// clear the input field
+				setNewName("");
+				setNewNumber("");
+			})
+			.catch((error) => {
+				console.log("failed to add a person to contacts");
+			});
 	};
 
 	return (
