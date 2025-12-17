@@ -11,19 +11,14 @@
       "id": "2"
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": "3"
+      "id": "ee66",
+      "name": "John Doe",
+      "number": "123-456789"
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": "4"
-    },
-    {
-      "id": "2d0e",
-      "name": "Gleb",
-      "number": "42424242"
+      "id": "f7b9",
+      "name": "Antti Matyniemi",
+      "number": "832-1235323"
     }
   ]
 }

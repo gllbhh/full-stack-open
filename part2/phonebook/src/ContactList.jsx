@@ -1,7 +1,7 @@
 import React from "react";
 import ContactItem from "./ContactItem";
 
-const ContactList = ({ contacts, filter }) => {
+const ContactList = ({ contacts, filter, removeContact }) => {
 	return (
 		<div>
 			<h2>Contacts:</h2>
@@ -9,7 +9,7 @@ const ContactList = ({ contacts, filter }) => {
 				{contacts
 					.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
 					.map((contact) => (
-						<ContactItem person={contact} key={contact.id} />
+						<ContactItem person={contact} removeContact={removeContact} key={contact.id} />
 					))}
 			</ol>
 		</div>

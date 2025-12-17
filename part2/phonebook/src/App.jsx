@@ -13,8 +13,12 @@ const App = () => {
 	// fetch data from localhost server using useEffect
 	useEffect(() => {
 		console.log("effect");
-		personService.getAll().then((persons) => setPersons(persons));
+		getContacts();
 	}, []);
+
+	const getContacts = () => {
+		personService.getAll().then((persons) => setPersons(persons));
+	};
 
 	// handle name input
 	const handleInputName = (event) => {
@@ -84,6 +88,25 @@ const App = () => {
 			});
 	};
 
+	const removeContact = (id) => {
+		console.log(`deleting user ${persons.filter((person) => person.id === id)[0].name} started`);
+		if (confirm(`Are you sure that you want to delete ${persons.filter((person) => person.id === id)[0].name}?`)) {
+			personService
+				.deleteById(id)
+				.then((response) => {
+					console.log(response);
+					const updatedPersons = persons.filter((person) => person.id !== id);
+					setPersons(updatedPersons);
+				})
+				.catch((error) => {
+					console.log("deletion failed");
+				});
+		} else {
+			console.log("deletion canceled by user");
+		}
+		return;
+	};
+
 	return (
 		<div>
 			<h1>Phonebook</h1>
@@ -95,7 +118,7 @@ const App = () => {
 				handleInputNumber={handleInputNumber}
 				submitFunction={updatePhonebook}
 			/>
-			<ContactList contacts={persons} filter={filter} />
+			<ContactList contacts={persons} removeContact={removeContact} filter={filter} />
 		</div>
 	);
 };
