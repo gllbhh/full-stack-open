@@ -1,6 +1,9 @@
 import React from "react";
 
-export default function Header({ props }) {
-	console.log(props);
-	return <h1>{props.course}</h1>;
-}
+const Header = ({ header }) => {
+	console.log("Header loaded");
+	console.log("Course name: ", header);
+	return <h1>{header}</h1>;
+};
+
+export default Header;

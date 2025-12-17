@@ -6,8 +6,8 @@ export default function Header({ props }) {
 	const sum = exercises.reduce((s, e) => s + e, 0);
 	console.log(sum);
 	return (
-		<>
-			<p>Number of exercises {sum}</p>
-		</>
+		<p>
+			<b>Total of {sum} exercises</b>
+		</p>
 	);
 }
