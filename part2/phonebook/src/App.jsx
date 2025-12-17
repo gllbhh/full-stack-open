@@ -1,18 +1,32 @@
 import { useState } from "react";
 
 const App = () => {
-	const [persons, setPersons] = useState([{ name: "Arto Hellas", phone: "040-1234567" }]);
+	const [persons, setPersons] = useState([
+		{ name: "Arto Hellas", number: "040-123456", id: 1 },
+		{ name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+		{ name: "Dan Abramov", number: "12-43-234345", id: 3 },
+		{ name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+	]);
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
+	const [filter, setFilter] = useState("");
 
+	// handle name input
 	const handleInputName = (event) => {
 		console.log("name: ", event.target.value);
 		setNewName(event.target.value);
 	};
 
+	// handle number input
 	const handleInputNumber = (event) => {
 		console.log("number: ", event.target.value);
 		setNewNumber(event.target.value);
+	};
+
+	// handle filter input
+	const handleInputFilter = (event) => {
+		console.log("filter: ", event.target.value);
+		setFilter(event.target.value);
 	};
 
 	const updatePhonebook = (event) => {
@@ -34,7 +48,12 @@ const App = () => {
 
 			return;
 		}
-		const updatedPersons = [...persons, { name: newName, phone: newNumber }];
+		// get max id from persons and add 1
+		const nextId = persons.reduce((max, person) => Math.max(max, person.id), 0) + 1;
+
+		// use spread operator to update persons
+		const updatedPersons = [...persons, { name: newName, number: newNumber, id: nextId }];
+
 		// sort new persons by name
 		updatedPersons.sort((a, b) => {
 			const nameA = a.name.toUpperCase();
@@ -59,6 +78,10 @@ const App = () => {
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<div>
+				Filter contacts: <input onChange={handleInputFilter} />
+			</div>
+			<h2>Add new</h2>
 			<form onSubmit={updatePhonebook}>
 				<div>
 					name: <input value={newName} onChange={handleInputName} />
@@ -69,15 +92,16 @@ const App = () => {
 				<div>
 					<button type="submit">add</button>
 				</div>
-				<div>debug: {newName} </div>
 			</form>
 			<h2>Numbers</h2>
 			<ol>
-				{persons.map((p) => (
-					<li key={p.name}>
-						{p.name} {p.phone}
-					</li>
-				))}
+				{persons
+					.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
+					.map((p) => (
+						<li key={p.id}>
+							{p.name} {p.number}
+						</li>
+					))}
 			</ol>
 		</div>
 	);
