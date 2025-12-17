@@ -12,12 +12,31 @@ const App = () => {
 
 	// fetch data from localhost server using useEffect
 	useEffect(() => {
-		console.log("effect");
+		console.log("Loading contacts");
 		getContacts();
 	}, []);
 
+	// function to get contacts
+	// get all returns the response data so we can set persons straight away
+	// otherwise use response.data
 	const getContacts = () => {
-		personService.getAll().then((persons) => setPersons(persons));
+		personService.getAll().then((fetchedPersons) => {
+			// sort by name
+			fetchedPersons.sort((a, b) => {
+				const nameA = a.name.toUpperCase();
+				const nameB = b.name.toUpperCase();
+				if (nameA < nameB) {
+					return -1;
+				}
+				if (nameA > nameB) {
+					return 1;
+				}
+				// if names are equal
+				return 0;
+			});
+			console.log("Loaded data: ", fetchedPersons);
+			setPersons(fetchedPersons);
+		});
 	};
 
 	// handle name input
@@ -38,25 +57,49 @@ const App = () => {
 		setFilter(event.target.value);
 	};
 
+	// function to handle adding/updating person
 	const updatePhonebook = (event) => {
 		// prevent page from reloading
 		event.preventDefault();
+
 		// prevent empty fields
 		if (newName === "" || newNumber === "") {
 			alert("Failed to add a name: One or more of the fields is empty");
 			console.log("Failed to add: empty fields");
-
 			return;
 		}
 
-		// prevent adding an existing name
+		// if the name is already on the list suggest to update person's number
 		if (persons.some((person) => person.name === newName)) {
-			const alertMessage = `Failed to add ${newName} to the phonebook. \n${newName} alredy exists in your phonebook`;
-			alert(alertMessage);
-			console.log(alertMessage);
+			const p = persons.find((person) => person.name === newName);
+			console.log(`Updating user ${p.name} at index ${persons.indexOf(p)}`);
+			const alertMessage = `${newName} is already in your contactas.\nUpdate ${newName}'s number?`;
 
-			return;
+			if (confirm(alertMessage)) {
+				console.log(`Updating ${newName}'s number`);
+				personService
+					// update method takes id and a new object
+					.update(p.id, { ...p, number: newNumber })
+					.then((response) => {
+						console.log(response);
+						const newPersons = [...persons];
+						newPersons[persons.indexOf(p)] = response;
+						setPersons(newPersons);
+						setNewName("");
+						setNewNumber("");
+						console.log(`Successfully updated ${p.name}`);
+					})
+					.catch((error) => {
+						console.log(`failed to update ${p.name}`);
+					});
+				return;
+			} else {
+				console.log("update canceled by user");
+				return;
+			}
 		}
+
+		// create a new person
 		const newPerson = { name: newName, number: newNumber };
 		personService
 			.create(newPerson)
