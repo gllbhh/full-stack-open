@@ -1,9 +1,7 @@
+import React from "react";
 import { useState } from "react";
-import ContactList from "./ContactList";
-import Filter from "./Filter";
-import AddContact from "./AddContact";
 
-const App = () => {
+const Phonebook = () => {
 	const [persons, setPersons] = useState([
 		{ name: "Arto Hellas", number: "040-123456", id: 1 },
 		{ name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
@@ -80,18 +78,34 @@ const App = () => {
 
 	return (
 		<div>
-			<h1>Phonebook</h1>
-			<Filter handleInputFilter={handleInputFilter} />
-			<AddContact
-				name={newName}
-				number={newNumber}
-				handleInputName={handleInputName}
-				handleInputNumber={handleInputNumber}
-				submitFunction={updatePhonebook}
-			/>
-			<ContactList contacts={persons} filter={filter} />
+			<h2>Phonebook</h2>
+			<div>
+				Filter contacts: <input onChange={handleInputFilter} />
+			</div>
+			<h2>Add new</h2>
+			<form onSubmit={updatePhonebook}>
+				<div>
+					name: <input value={newName} onChange={handleInputName} />
+				</div>
+				<div>
+					number: <input value={newNumber} onChange={handleInputNumber} />
+				</div>
+				<div>
+					<button type="submit">add</button>
+				</div>
+			</form>
+			<h2>Numbers</h2>
+			<ol>
+				{persons
+					.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
+					.map((p) => (
+						<li key={p.id}>
+							{p.name} {p.number}
+						</li>
+					))}
+			</ol>
 		</div>
 	);
 };
 
-export default App;
+export default Phonebook;
