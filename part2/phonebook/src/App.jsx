@@ -12,6 +12,14 @@ const App = () => {
 	const updatePhonebook = (event) => {
 		// prevent page from reloading
 		event.preventDefault();
+		// prevent adding an existing name
+		if (persons.some((person) => person.name === newName)) {
+			const alertMessage = `Failed to add ${newName} to the phonebook. \n${newName} alredy exists in your phonebook`;
+			alert(alertMessage);
+			console.log(alertMessage);
+
+			return;
+		}
 		const updatedPersons = [...persons, { name: newName }];
 		// sort new persons by name
 		updatedPersons.sort((a, b) => {
