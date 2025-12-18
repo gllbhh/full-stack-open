@@ -3,12 +3,16 @@ import ContactList from "./ContactList";
 import personService from "./services/persons";
 import Filter from "./Filter";
 import AddContact from "./AddContact";
+import Notification from "./Notification";
+import "./index.css";
 
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 	const [filter, setFilter] = useState("");
+	const [notificationMessage, setNotificationMessage] = useState(null);
+	const [notificationClass, setNotificationClass] = useState("");
 
 	// fetch data from localhost server using useEffect
 	useEffect(() => {
@@ -87,9 +91,14 @@ const App = () => {
 						setPersons(newPersons);
 						setNewName("");
 						setNewNumber("");
-						console.log(`Successfully updated ${p.name}`);
+						const message = `Successfully updated contact ${p.name}`;
+						console.log(message);
+						notificationWithTimout(message, "notification-success", 3000);
 					})
 					.catch((error) => {
+						const message = `Failed to update contact ${newPerson.name}`;
+						console.log(message);
+						notificationWithTimout(message, "notification-error", 3000);
 						console.log(`failed to update ${p.name}`);
 					});
 				return;
@@ -125,14 +134,20 @@ const App = () => {
 				// clear the input field
 				setNewName("");
 				setNewNumber("");
+				const message = `Successfully cpreated contact ${newPerson.name}`;
+				console.log(message);
+				notificationWithTimout(message, "notification-success", 3000);
 			})
 			.catch((error) => {
-				console.log("failed to add a person to contacts");
+				const message = `Failed to add a contact ${newPerson.name}`;
+				console.log(message);
+				notificationWithTimout(message, "notification-error", 3000);
 			});
 	};
 
 	const removeContact = (id) => {
-		console.log(`deleting user ${persons.filter((person) => person.id === id)[0].name} started`);
+		const rName = persons.filter((person) => person.id === id)[0].name;
+		console.log(`deleting user ${rName} started`);
 		if (confirm(`Are you sure that you want to delete ${persons.filter((person) => person.id === id)[0].name}?`)) {
 			personService
 				.deleteById(id)
@@ -140,9 +155,15 @@ const App = () => {
 					console.log(response);
 					const updatedPersons = persons.filter((person) => person.id !== id);
 					setPersons(updatedPersons);
+					const message = `Successfully removed contact ${rName}`;
+					console.log(message);
+					notificationWithTimout(message, "notification-success", 3000);
 				})
 				.catch((error) => {
 					console.log("deletion failed");
+					const message = `Failed to remove contact ${rName}`;
+					console.log(message);
+					notificationWithTimout(message, "notification-error", 3000);
 				});
 		} else {
 			console.log("deletion canceled by user");
@@ -150,9 +171,19 @@ const App = () => {
 		return;
 	};
 
+	//display notification for 5 sec
+	const notificationWithTimout = (message, cName, timeout) => {
+		setNotificationMessage(message);
+		setNotificationClass(cName);
+		setTimeout(() => {
+			setNotificationMessage(null);
+		}, timeout);
+	};
+
 	return (
 		<div>
 			<h1>Phonebook</h1>
+			<Notification message={notificationMessage} nClass={notificationClass} />
 			<Filter handleInputFilter={handleInputFilter} />
 			<AddContact
 				name={newName}
