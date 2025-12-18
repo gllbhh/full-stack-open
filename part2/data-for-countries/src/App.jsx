@@ -48,11 +48,15 @@ function App() {
 			setFilter(event.target.value);
 		}
 	};
+
+	const handleShowButton = (country) => {
+		setCountryToShow(country);
+	};
 	// render country information if only one country is found or search results if more
 	const content = countryToShow ? (
 		<CountryInformation country={countryToShow} />
 	) : (
-		<SearchResults countriesList={countries} />
+		<SearchResults countriesList={countries} buttonF={handleShowButton} />
 	);
 
 	return (

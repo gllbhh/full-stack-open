@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchResults = ({ countriesList }) => {
+const SearchResults = ({ countriesList, buttonF }) => {
 	if (!countriesList) {
 		return;
 	}
@@ -14,6 +14,7 @@ const SearchResults = ({ countriesList }) => {
 				{countriesList.map((e, i) => (
 					<div key={i}>
 						{e.name.common}, {e.name.official}
+						<button onClick={() => buttonF(e)}>show</button>
 					</div>
 				))}
 			</>
