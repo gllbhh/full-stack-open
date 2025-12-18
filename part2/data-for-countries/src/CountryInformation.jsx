@@ -1,4 +1,5 @@
 import React from "react";
+import Weather from "./Weather";
 
 const CountryInformation = ({ country }) => {
 	const languages = Object.values(country.languages);
@@ -20,6 +21,7 @@ const CountryInformation = ({ country }) => {
 				</ul>
 			</div>
 			<img src={country.flags.png} style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.35)" }} />
+			<Weather city={country.capital} />
 		</div>
 	);
 };
