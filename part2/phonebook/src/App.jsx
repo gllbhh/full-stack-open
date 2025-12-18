@@ -96,7 +96,7 @@ const App = () => {
 						notificationWithTimout(message, "notification-success", 3000);
 					})
 					.catch((error) => {
-						const message = `Failed to update contact ${newPerson.name}`;
+						const message = `Failed to update contact ${p.name}`;
 						console.log(message);
 						notificationWithTimout(message, "notification-error", 3000);
 						console.log(`failed to update ${p.name}`);

@@ -16,11 +16,6 @@
       "number": "444-33213321"
     },
     {
-      "id": "b471",
-      "name": "Ben Doe",
-      "number": "090-123321"
-    },
-    {
       "id": "ebbe",
       "name": "Anna Lavalle",
       "number": "83-2332158"
@@ -29,6 +24,11 @@
       "id": "9f40",
       "name": "Aleksi Myllymaki",
       "number": "43-3221331"
+    },
+    {
+      "id": "ca87",
+      "name": "Ben Doe",
+      "number": "321-33213"
     }
   ]
 }
