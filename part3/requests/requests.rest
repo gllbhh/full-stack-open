@@ -17,3 +17,6 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3001/persons
+
+### 
+GET http://localhost:3001/info

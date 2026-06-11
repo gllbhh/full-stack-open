@@ -62,6 +62,11 @@ app.get("/persons/", (request, response) => {
 	response.json(persons);
 });
 
+app.get("/info", (request, response) => {
+	console.log(persons.length);
+	response.send(`Phonebook has info for ${persons.length} people <br> ${new Date()}</p>`);
+});
+
 // delete a note
 app.delete("/api/notes/:id", (request, response) => {
 	const id = request.params.id;
