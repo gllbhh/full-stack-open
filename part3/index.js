@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+// import the persons data from phonebook.js
+const persons = require("./phonebook");
+
 // middleware to parse JSON bodies
 app.use(express.json());
 
@@ -33,14 +36,17 @@ const generateId = () => {
 	return String(maxId + 1);
 };
 
+// get root route
 app.get("/", (request, response) => {
 	response.send("<h1>Hello World!</h1>");
 });
 
+// get all notes
 app.get("/api/notes", (request, response) => {
 	response.json(notes);
 });
 
+// get a note by id
 app.get("/api/notes/:id", (request, response) => {
 	const id = request.params.id;
 	const note = notes.find((note) => note.id === id);
@@ -49,6 +55,11 @@ app.get("/api/notes/:id", (request, response) => {
 	} else {
 		response.status(404).end();
 	}
+});
+
+// get all persons
+app.get("/persons/", (request, response) => {
+	response.json(persons);
 });
 
 // delete a note
