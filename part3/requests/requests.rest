@@ -1,0 +1,16 @@
+###
+GET http://localhost:3001/api/notes
+
+###
+DELETE http://localhost:3001/api/notes/3
+
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "HTTP is easy",
+  "important": true
+}
+
