@@ -36,6 +36,12 @@ const generateId = () => {
 	return String(maxId + 1);
 };
 
+// generate a new id for a person function
+const generateIdPersons = () => {
+	const maxId = persons.length > 0 ? Math.max(...persons.map((p) => Number(p.id))) : 0;
+	return String(maxId + 1);
+};
+
 // get root route
 app.get("/", (request, response) => {
 	response.send(
@@ -87,14 +93,34 @@ app.post("/api/notes", (request, response) => {
 
 	response.json(note);
 });
+// add a note
+app.post("/api/notes", (request, response) => {
+	const body = request.body;
+
+	if (!body.content) {
+		return response.status(400).json({
+			error: "content missing",
+		});
+	}
+
+	const note = {
+		content: body.content,
+		important: body.important || false,
+		id: generateId(),
+	};
+
+	notes = notes.concat(note);
+
+	response.json(note);
+});
 
 // get all persons
-app.get("/persons", (request, response) => {
+app.get("/api/persons", (request, response) => {
 	response.json(persons);
 });
 
 // get a single person by id
-app.get("/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response) => {
 	const id = request.params.id;
 	const person = persons.find((person) => person.id === id);
 
@@ -106,7 +132,7 @@ app.get("/persons/:id", (request, response) => {
 });
 
 // delete a person by id
-app.delete("/persons/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response) => {
 	const id = request.params.id;
 	const person = persons.find((person) => person.id === id);
 
@@ -116,6 +142,42 @@ app.delete("/persons/:id", (request, response) => {
 
 	persons = persons.filter((person) => person.id !== id);
 	response.status(204).end();
+});
+
+// add a person to the phonebook
+app.post("/api/persons", (request, response) => {
+	const body = request.body;
+
+	// check if the name is present
+	if (!body.name) {
+		return response.status(400).json({
+			error: "name missing",
+		});
+	}
+
+	// check if the number is present
+	if (!body.number) {
+		return response.status(400).json({
+			error: "number missing",
+		});
+	}
+
+	// check if the name already exists in the phonebook
+	if (persons.find((person) => person.name === body.name)) {
+		return response.status(400).json({
+			error: "name is already in the phonebook",
+		});
+	}
+
+	const person = {
+		name: body.name,
+		number: body.number,
+		id: generateIdPersons(),
+	};
+
+	persons = persons.concat(person);
+
+	response.json(person);
 });
 
 // get info about the phonebook
