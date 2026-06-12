@@ -18,6 +18,9 @@ Content-Type: application/json
 ### 
 GET http://localhost:3001/info
 
+### 
+HEAD http://localhost:3001/info
+
 ###
 GET http://localhost:3001/api/persons
 
@@ -37,3 +40,5 @@ Content-Type: application/json
   "number": "123-456-7890"
 }
 
+###
+GET http://localhost:3001/api/randomendpoint

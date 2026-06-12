@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
 
 // import the persons data from phonebook.js
@@ -6,6 +7,59 @@ var persons = require("./phonebook");
 
 // middleware to parse JSON bodies
 app.use(express.json());
+
+// middleware to log requests
+const requestLogger = (request, response, next) => {
+	console.log("Date:", new Date());
+	console.log("Method:", request.method);
+	console.log("Path: ", request.path);
+	console.log("Body: ", request.body);
+	console.log("---");
+	next();
+};
+
+// use the request logger middleware
+// placement of the middleware is important, it should be before the routes
+//app.use(requestLogger);
+
+/*
+Morgan logging quick reference
+
+Built-in formats:
+- tiny
+- dev
+- short
+- common
+- combined
+
+Useful tokens you can use in a custom format string:
+:method
+:url
+:status
+:response-time
+:total-time
+:res[content-length]
+:date[clf]
+:date[iso]
+:http-version
+:remote-addr
+:remote-user
+:referrer
+:user-agent
+:req[header-name]
+:res[header-name]
+
+Example custom format:
+:method :url :status :res[content-length] - :response-time ms
+*/
+
+// Log method, URL, status, timing, and body
+// app.use(morgan("tiny"));
+
+// Optional custom token to log request body
+morgan.token("body", (req) => JSON.stringify(req.body));
+// custom format including body
+app.use(morgan(":method :url :status :res[content-length] - :response-time ms :body"));
 
 let notes = [
 	{
@@ -182,9 +236,16 @@ app.post("/api/persons", (request, response) => {
 
 // get info about the phonebook
 app.get("/info", (request, response) => {
-	console.log(persons.length);
+	// console.log(persons.length);
 	response.send(`Phonebook has info for ${persons.length} people <br> ${new Date()}</p>`);
 });
+
+// middleware to handle unknown endpoints
+const unknownEndpoint = (request, response) => {
+	response.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT, () => {
