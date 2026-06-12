@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 // import the persons data from phonebook.js
-const persons = require("./phonebook");
+var persons = require("./phonebook");
 
 // middleware to parse JSON bodies
 app.use(express.json());
@@ -38,7 +38,9 @@ const generateId = () => {
 
 // get root route
 app.get("/", (request, response) => {
-	response.send("<h1>Hello World!</h1>");
+	response.send(
+		"<img src='https://i1.sndcdn.com/artworks-x8zI2HVC2pnkK7F5-4xKLyA-t500x500.jpg' alt='Never Gonna Give You Up!' />",
+	);
 });
 
 // get all notes
@@ -55,28 +57,6 @@ app.get("/api/notes/:id", (request, response) => {
 	} else {
 		response.status(404).end();
 	}
-});
-
-// get all persons
-app.get("/persons/", (request, response) => {
-	response.json(persons);
-});
-
-// get a single person by id
-app.get("/persons/:id", (request, response) => {
-	const id = request.params.id;
-	person = persons.find((person) => person.id === id);
-
-	if (person) {
-		response.json(person);
-	} else {
-		response.status(404).end();
-	}
-});
-
-app.get("/info", (request, response) => {
-	console.log(persons.length);
-	response.send(`Phonebook has info for ${persons.length} people <br> ${new Date()}</p>`);
 });
 
 // delete a note
@@ -106,6 +86,42 @@ app.post("/api/notes", (request, response) => {
 	notes = notes.concat(note);
 
 	response.json(note);
+});
+
+// get all persons
+app.get("/persons", (request, response) => {
+	response.json(persons);
+});
+
+// get a single person by id
+app.get("/persons/:id", (request, response) => {
+	const id = request.params.id;
+	const person = persons.find((person) => person.id === id);
+
+	if (person) {
+		response.json(person);
+	} else {
+		response.status(404).end();
+	}
+});
+
+// delete a person by id
+app.delete("/persons/:id", (request, response) => {
+	const id = request.params.id;
+	const person = persons.find((person) => person.id === id);
+
+	if (!person) {
+		return response.status(404).json({ error: "person not found" });
+	}
+
+	persons = persons.filter((person) => person.id !== id);
+	response.status(204).end();
+});
+
+// get info about the phonebook
+app.get("/info", (request, response) => {
+	console.log(persons.length);
+	response.send(`Phonebook has info for ${persons.length} people <br> ${new Date()}</p>`);
 });
 
 const PORT = 3001;
