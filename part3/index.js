@@ -62,6 +62,18 @@ app.get("/persons/", (request, response) => {
 	response.json(persons);
 });
 
+// get a single person by id
+app.get("/persons/:id", (request, response) => {
+	const id = request.params.id;
+	person = persons.find((person) => person.id === id);
+
+	if (person) {
+		response.json(person);
+	} else {
+		response.status(404).end();
+	}
+});
+
 app.get("/info", (request, response) => {
 	console.log(persons.length);
 	response.send(`Phonebook has info for ${persons.length} people <br> ${new Date()}</p>`);
