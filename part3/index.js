@@ -1,6 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
+const cors = require("cors");
+
+// enable CORS for all routes
+app.use(cors());
 
 // import the persons data from phonebook.js
 var persons = require("./phonebook");
@@ -247,7 +251,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint);
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
